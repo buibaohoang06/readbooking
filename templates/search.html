@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+{% endblock %}
+{% block body %}
+<p>You searched for {{searched}}</p>
+{% endblock %}

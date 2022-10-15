@@ -1,0 +1,12 @@
+#posts{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#introduction{
+    margin: 50px auto;
+    text-align: center;
+    width: 100%;
+}
+#post-container{
+    margin: auto;
+}

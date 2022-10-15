@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">{% endblock %}
+{% block body %}
+<div id="register-page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="position-absolute top-50 start-50 translate-middle" id="register-block">
+        <form method="POST" action="{{ url_for('index.register') }}">
+            <h4>Welcome aboard!</h4>
+            {{ form.csrf_token() }}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                {{ form.email(class_="form-control", id_="email") }}
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                {{ form.username(class_="form-control", id_="username") }}
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                {{ form.password(class_="form-control", id_="password") }}
+            </div>
+            {{ form.submit(class_="btn btn-primary") }}
+        </form>
+    </div>
+</div>
+{% endblock %}

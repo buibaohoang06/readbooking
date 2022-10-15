@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='posts.css') }}">
+{% endblock %}
+{% block body %}
+<div id="display-post" class="container" style="padding: 50px;">
+    <div id="post-info" style="text-align: center">
+        <p style="color: gray;">Written by {{ post.author }}</p>
+        <p style="color: gray;">Posted on: {{ post.time }}</p>
+        <h2>{{ post.title }}</h2>
+        <p style="color: gray;">{{ post.description }}</p>
+    </div>
+    <img class="img-fluid rounded mb-4" src="{{ url_for('static', filename='/uploads/images/' + post.image) }}" style="margin: auto; width: 100%; max-height:600px; object-fit: cover;">
+    <hr/>
+    <p>{{ post.content|safe }}</p>
+</div>
+{% endblock %}

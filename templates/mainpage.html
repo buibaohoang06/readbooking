@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='mainpage.css') }}">{% endblock %}
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show position-absolute" role="alert" style="width: 100%;">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<div id="introduction" style="padding: 10px;" class="container">
+    <h1>Welcome to Read Booking</h1>
+    <p>A place for you to find the review of your favorite books. Free and easily accessable.</p>
+    <p>Start finding what you need by typing into the search bar or to look down here.</p>
+    <form class="d-flex" role="search" style="margin: auto;" method="POST" action="{{ url_for('index.mainpage') }}">
+        {{ sform.csrf_token() }}
+        {{ sform.search_content(class_="form-control me-2", type_="search") }}
+        {{ sform.submit(class_="btn btn-outline-success", type_="submit") }}    
+    </form>
+</div>
+<div id="posts" class="container position-relative" style="margin: auto;">
+    {% if queried_posts %}
+    <div class="row" id="post-container" style="margin: auto;"> 
+        {% for post in queried_posts.items %}
+        <div class="col-12 col-md-6 col-lg-4" style="display: inline-block; padding: 10px;">
+            <div class="card" style="margin: auto">
+                <img src="{{ url_for('static', filename='uploads/images/' + post.image) }}" class="card-img-top" style="width:100%; height: 200px; object-fit: cover">
+                <div class="card-body">
+                    <h5 class="card-title" style="text-overflow: ellipsis">{{ post.title }}</h5>
+                    <p class="card-text" style="text-overflow: ellipsis">{{ post.description }}</p>
+                    <a href="/posts/{{ post.link }}" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+            <nav aria-label="pagination">
+                <ul class="pagination justify-content-end">
+                    {% for page_num in queried_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_num %}
+                            {% if queried_posts.page == page_num %}
+                                <li class="page-item"><a class="page-link active" href="{{ url_for('index.mainpage', page=page_num) }}">{{ page_num }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('index.mainpage', page=page_num) }}">{{ page_num }}</a></li>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+    </div>
+    {% else %}
+        <div class="row" id="post-container" style="margin: auto;"> 
+            {% for post in posts.items %}
+            <div class="col-12 col-md-6 col-lg-4" style="display: inline-block; padding: 10px;">
+                <div class="card" style="margin: auto;">
+                    <img src="{{ url_for('static', filename='uploads/images/' + post.image) }}" class="card-img-top" style="width:100%; height: 300px; object-fit: cover">
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-overflow: ellipsis">{{ post.title }}</h5>
+                        <p class="card-text" style="text-overflow: ellipsis">{{ post.description }}</p>
+                        <a href="/posts/{{ post.link }}" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <nav aria-label="pagination">
+            <ul class="pagination justify-content-end">
+                {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                    {% if page_num %}
+                        {% if posts.page == page_num %}
+                            <li class="page-item"><a class="page-link active" href="{{ url_for('index.mainpage', page=page_num) }}">{{ page_num }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('index.mainpage', page=page_num) }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
